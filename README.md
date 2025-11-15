@@ -159,18 +159,8 @@ npm run dev
 * VS code
 * draw.io
 * dbdiagram.io
----
-
-
-##  License
-
-MIT License
-
----
-
+  
 ##  Contributing
 
 Pull requests are welcome. For major changes, please open an issue first.
 :)
-# mobile-shopping-app-DevOps
-# mobile-shopping-app-DevOps
