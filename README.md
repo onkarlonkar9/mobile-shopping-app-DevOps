@@ -1,166 +1,183 @@
-##  Mobile Shopping Application (MSA)📱
+# Mobile Shopping App – DevOps
 
-A full-stack microservices-based e-commerce platform that allows vendors and customers to interact through dedicated frontend interfaces. It supports vendor listing, product listings, customer cart/order management, secure payments.
+Full-stack microservices e-commerce platform with separate frontends for customers and vendors, plus a backend and DevOps setup.
 
----
-## Documentation
+Table of Contents
 
-- [Basic Functionality](docs/BasicFunctionality/basicFunctionality%20.jpg)
-- [Use case diagram](docs/UseCaseDiagram/useCaseDiagram.png)
-- [Database Schema](docs/DatabaseSchema/)
-- [Payment Gateway](docs/PaymentGateway/PaymentGatewayArchitecture.jpeg)
+Overview
 
----
+Tech Stack
 
-##  Tech Stack
+Features
 
-###  Frontend
+Project Structure
 
-* **Customer**: React + TailwindCSS + Zustand + React Hook Form + React Query + Axios + RazorPay Payment Gateway + AWS S3
-* **Vendor**: React + TailwindCSS + React Hook Form + React Query + Axios + AWS S3
-* **Build Tool**: Vite
+Getting Started
 
-### Backend
+DevOps / Deployment
 
-* **Node.js + Express.js**
-* **Sequelize ORM** with MySQL
-* **Multer for file upload**
-* **RESTful APIs**
-* **Service Pattern(MVCS)**
+Database & Security
 
-### Third-Party Integrations
+Contributing
 
-* **AWS S3** – Image upload & storage
-* **Razorpay** – Payment gateway
+License
 
----
+Overview
 
-##  Features
+This project allows vendors to list products and customers to browse, search, purchase items. Separate vendor-dashboard and customer portal.
+Integrates image upload (via AWS S3), payments (via Razorpay), roles (vendor/customer) and basic order workflow.
 
+Tech Stack
 
-###  Vendor Dashboard
+Frontend
 
-* CRUD for product listings
-* Manage orders
-* Update brand logo 
-* Manage profile
+Customer and Vendor portals: React + TailwindCSS + React Query + Axios + React Hook Form
 
-###  Customer Portal
+State management: Zustand
 
-* Browse products without login
-* Product search and filtering
-* Add/remove items in the cart
-* CRUD operations on address
-* Place orders (no cancellations post-placement)
-* Make payments via Razorpay
-* Manage profile
-* Demo footer links
+Build tool: Vite
 
----
+AWS S3 for storage
 
-##  Project Structure
+Razorpay for payments
 
-```
+Backend
+
+Node.js + Express
+
+Sequelize ORM + MySQL
+
+Multer for file uploads
+
+RESTful APIs using service pattern (MVCS)
+
+Third-Party Integrations
+
+AWS S3 — for images (brand logos & product images)
+
+Razorpay — payment gateway
+
+Features
+Vendor Dashboard
+
+CRUD product listings (add/update/delete)
+
+Manage incoming orders
+
+Update brand logo or profile
+
+View/manage vendor profile
+
+Customer Portal
+
+Browse/ search/ filter products (without login)
+
+Add/remove items in cart
+
+Manage address (CRUD)
+
+Place orders (once placed, no cancellation)
+
+Pay via Razorpay
+
+Manage profile
+
+Project Structure
+```bash
 /MSA
-├── /Frontend(Admin) 
-├── /Frontend(Customer)
-├── /Fronted(Vendor)
+├── /Frontend(customer)
+├── /Frontend(vendor)
 ├── /backend
 ├── /docs
+├── docker-compose.yml
+├── customer-nginx.conf
+├── vendor-nginx.conf
+└── etc.
 ```
 
----
+Getting Started
+Prerequisites
 
+Node.js (version X or higher)
 
+MySQL database
 
-##  Getting Started
+AWS account with S3 bucket configured
 
-### 1. Clone the repo
+Razorpay account/API keys
 
+Setup
+
+Clone the repo:
 ```bash
-git clone https://github.com/iamganeshsalunkhe/mobile-shopping-app.git
-cd MSA
+git clone https://github.com/onkarlonkar9/mobile-shopping-app-DevOps.git
+cd mobile-shopping-app-DevOps
 ```
-
-### 2. Install  backend dependencies
-
-**For backend**
+Setup backend:
 ```bash
 cd backend
 npm install
-npm start
 ```
-### 3. Setup a MySQL database:
-* Create a new MySQL database and update the database configuration in 
-`
-config/config.json
-` 
+# configure database in config/config.json
 
-### 4. Run database migrations
 
-**In backend folder(MSA/backend)**  
-```sh
+Create MySQL database and update config.
+
+Run migrations:
+```bash
 npx sequelize db:migrate
 ```
-### 5. Install frontend dependencies
-**For Vendor**
-```sh
-cd Frontend(vendor)
+
+Install and start frontends:
+
+Vendor portal:
+```bash
+cd ../Frontend/vendor
+npm install
 npm run dev
 ```
-**For Customer**
-```sh
-cd Frontend(customer)
+
+Customer portal:
+```bash
+cd ../Frontend/customer
+npm install
 npm run dev
 ```
 
----
 
-## Database Schema
+Run Docker / compose (if provided) for full stack + services:
+```bash
+docker-compose up --build
+```
 
-* Built clean and normalized, scalable database
-* Each data entry stored neatly considered all edge cases
-![Database Schema](docs/DatabaseSchema/MSADatabaseSchema.png)
+DevOps & Deployment
 
----
+Uses docker-compose.yml for orchestration of backend, frontends, Nginx, database etc.
 
-##  Authentication & Security
+Nginx configurations for customer frontend (customer-nginx.conf) and vendor frontend (vendor-nginx.conf) provided.
 
-* JWT-based auth stored in **HTTP-only cookies**
-* Role-based access controls: `vendor`, `customer`
+Suggest CI/CD pipeline: e.g., GitHub Actions to build docker images, push to registry, deploy to server or cloud.
 
----
+ENV variables: store API keys, DB credentials, AWS S3 credentials securely.
 
-##  Image Upload
+Database & Security
 
-* Vendor's brand logo and product images are uploaded via multer to AWS S3
-* Supports **single** image upload (brand-logo) and **multiple** image uploads (products)
+Database schema is normalized for scalability.
 
----
+Authentication: JWT tokens stored in HTTP-only cookies.
 
-##  Payments
+Role-based access control: vendor, customer.
 
-* Razorpay Checkout integration with Webhook implementation
-* Payments locked after checkout; no cancellation
-* An order gets confirmed only after the webhook reaches the backend
+File uploads: via multer → AWS S3. Supports single (brand logo) and multiple (product images).
 
-### Payment Gateway Architecture Diagram
-![Payment Gateway Architecture](docs/PaymentGateway/PaymentGatewayArchitecture.jpeg)
+Payments: Razorpay Checkout + webhook. Order confirmed only after webhook callback (prevents spoofing).
 
----
+Contributing
 
+Pull requests welcome. For major changes, please open an issue to discuss first.
+Make sure code adheres to linting / formatting (ESLint + Prettier).
+Include tests where possible.
 
-##  Dev Tools
+License
 
-* Nodemon for backend dev
-* ESLint + Prettier
-* React-Query DevTools, Zustand Devtools, DaisyUI, mantine UI
-* Postman
-* VS code
-* draw.io
-* dbdiagram.io
-  
-##  Contributing
-
-Pull requests are welcome. For major changes, please open an issue first.
-:)
+This project is licensed under the MIT License.
